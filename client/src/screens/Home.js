@@ -1,51 +1,45 @@
-import React from 'react'
+import React,{useEffect,useState} from 'react'
 
 const Home = ()=>{
+    const [posts,setPosts] = useState([])
+    useEffect(()=>{
+        fetch('/allposts',{
+            headers:{
+                'Authorization':`Bearer ${localStorage.getItem('jwt')}`
+            }
+        })
+        .then(res=>res.json())
+        .then(result=>{
+            console.log(result.posts)
+            setPosts(result.posts)
+            
+        })
+    },[])
+    
     return(
         <div className='home'>
             
-            <div className='card home-card'>
-               <h5 className='card-content'>UserName</h5> 
+            {posts.map(post=>{
+                return(
+                    <div className='card home-card' key={post._id}>
+                
+                <h5 className='card-content'>{post.postedBy.name}</h5> 
                <div className='card-image'>
-                    <img src='https://images.unsplash.com/photo-1475727946784-2890c8fdb9c8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=600&q=60' />
+                    <img src={post.photo}/>
                </div>
                <div className='card-content'>
                <i className="material-icons">favorite</i>
                    <h6>
-                       title
+                       {post.title}
                    </h6>
-                    <p>this is first post caption</p>
+                    <p>{post.body}</p>
                     <input type='text'placeholder='Add a comment' />
                </div>
             </div>
-            <div className='card home-card'>
-               <h5 className='card-content'>UserName</h5> 
-               <div className='card-image'>
-                    <img src='https://images.unsplash.com/photo-1475727946784-2890c8fdb9c8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=600&q=60' />
-               </div>
-               <div className='card-content'>
-               <i className="material-icons">favorite</i>
-                   <h6>
-                       title
-                   </h6>
-                    <p>this is first post caption</p>
-                    <input type='text'placeholder='Add a comment' />
-               </div>
-            </div>
-            <div className='card home-card'>
-               <h5 >UserName</h5> 
-               <div className='card-image'>
-                    <img src='https://images.unsplash.com/photo-1475727946784-2890c8fdb9c8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=600&q=60' />
-               </div>
-               <div className='card-content'>
-               <i className="material-icons">favorite</i>
-                   <h6>
-                       title
-                   </h6>
-                    <p>this is first post caption</p>
-                    <input type='text'placeholder='Add a comment' />
-               </div>
-            </div>
+                )
+            })}
+            
+            
         </div>
     )
 }
