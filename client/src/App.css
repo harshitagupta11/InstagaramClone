@@ -44,3 +44,6 @@ a{
   right: 20px;
   left: auto;
 }
+.like:hover{
+cursor: pointer;
+}
