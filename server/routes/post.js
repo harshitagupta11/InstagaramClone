@@ -11,7 +11,7 @@ router.get('/allposts',requireLogin,(req,res,err)=>{
     .populate("comments.postedBy")
     
     .then((posts)=>{
-        console.log(posts)
+        //console.log(posts)
         res.json({posts:posts})
     }).catch(err=>console.log(err))
 })
@@ -82,7 +82,7 @@ router.put('/comment',requireLogin,(req,res)=>{
     .populate("comments.postedBy")
     .populate("postedBy",'_id name')
     .exec((err,result)=>{
-        console.log(result)
+        //console.log(result)
         if(err){
             
             return res.status(422).json({error:err})
