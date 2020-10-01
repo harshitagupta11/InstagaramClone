@@ -99,6 +99,23 @@ const Home = ()=>{
         })
   }
 
+  const deletePost=(postId)=>{
+      fetch(`/delete/${postId}`,{
+        method:"delete",
+        headers:{
+            
+            "Authorization":"Bearer "+localStorage.getItem("jwt")
+        },
+       }).then(res=>res.json()).then(result=>{
+           //console.log(result)
+           const newData= posts.filter(post=>{
+               return post._id!=result._id
+           })
+           setPosts(newData)
+       })
+  }
+
+
     return(
         <div className='home'>
             
@@ -106,7 +123,11 @@ const Home = ()=>{
                 return(
                     <div className='card home-card' key={post._id}>
                 
-                <h5 className='card-content'>{post.postedBy.name}</h5> 
+                <h5 className='card-content'>
+                    {post.postedBy.name} 
+                {post.postedBy._id==state._id &&
+                 <i className=" small material-icons like waves-effect waves-light" onClick={()=>deletePost(post._id)} style={{color:'red',float:"right"}}>delete</i>}</h5> 
+                
                <div className='card-image'>
                {post.likes.includes(state._id)
                     ? <img src={post.photo} onDoubleClick={()=>postUnlike(post._id)}/>
