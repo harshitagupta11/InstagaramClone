@@ -114,6 +114,26 @@ const Home = ()=>{
            setPosts(newData)
        })
   }
+   const deleteComment=(postId,commentId)=>{
+    fetch(`/deletecomment/${postId}/${commentId}`,{
+        method:"delete",
+        headers:{
+            
+            "Authorization":"Bearer "+localStorage.getItem("jwt")
+        },
+       }).then(res=>res.json()).then(result=>{
+           //console.log(result)
+           const newData= posts.map(post=>{
+               if(post._id==result._id)
+               return result
+               else{
+                   return post
+               }
+           })
+           console.log(newData)
+           setPosts(newData)
+       })
+   }
 
 
     return(
@@ -126,7 +146,7 @@ const Home = ()=>{
                 <h5 className='card-content'>
                     {post.postedBy.name} 
                 {post.postedBy._id==state._id &&
-                 <i className=" small material-icons like waves-effect waves-light" onClick={()=>deletePost(post._id)} style={{color:'red',float:"right"}}>delete</i>}</h5> 
+                 <i className="  material-icons like waves-effect waves-light " onClick={()=>deletePost(post._id)} style={{color: '#e57373 ',float:"right"}}>delete</i>}</h5> 
                 
                <div className='card-image'>
                {post.likes.includes(state._id)
@@ -137,7 +157,7 @@ const Home = ()=>{
                </div>
                <div className='card-content'>
                    {post.likes.includes(state._id)
-                    ?<i className=" small material-icons like waves-effect waves-light" onClick={()=>postUnlike(post._id)} style={{color:'red'}}>favorite</i>
+                    ?<i className=" small material-icons like waves-effect waves-light" onClick={()=>postUnlike(post._id)} style={{color:'#d32f2f '}}>favorite</i>
                     :<i className="small material-icons like waves-effect waves-light" onClick={()=>postLike(post._id)}>favorite_border</i>
                 }
                
@@ -149,7 +169,11 @@ const Home = ()=>{
                     {
                        post.comments.map(record=>{
                                 return(
-                                <h6 key={record._id}><span style={{fontWeight:"500"}}>{record.postedBy.name}</span> {record.text}</h6>
+                                <h6 key={record._id}><span style={{fontWeight:"500"}}>{record.postedBy.name}</span> {record.text} 
+                                {(post.postedBy._id==state._id||record.postedBy._id==state._id)&&
+                 <i className=" material-icons like " onClick={()=>deleteComment(post._id,record._id)} style={{color:'#e57373',float:"right"}}>delete</i>}
+                                
+                                </h6>
                                     )
                                     })
                                 }
@@ -159,6 +183,7 @@ const Home = ()=>{
                         e.target[0].value=""
                     }}>
                     <input type='text'placeholder='Add a comment' />
+                    
                     </form>
                     
                </div>
