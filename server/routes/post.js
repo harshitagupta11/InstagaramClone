@@ -5,8 +5,13 @@ const requireLogin = require('../middleware/requireLogin');
 
 const Post = mongoose.model('Post');
 
+mongoose.set('useFindAndModify', false);
 router.get('/allposts',requireLogin,(req,res,err)=>{
-    Post.find().populate("postedBy",'_id name').then((posts)=>{
+    Post.find().populate("postedBy",'_id name')
+    .populate("comments.postedBy")
+    
+    .then((posts)=>{
+        console.log(posts)
         res.json({posts:posts})
     }).catch(err=>console.log(err))
 })
@@ -42,7 +47,8 @@ router.post('/createpost',requireLogin,(req,res,err)=>{
 router.put('/like',requireLogin,(req,res,err)=>{
        Post.findByIdAndUpdate(req.body.postId,
         {$push:{likes:req.user._id}},
-        {new:true}).exec((err,result)=>{
+        {new:true}).populate("comments.postedBy")
+        .exec((err,result)=>{
             if(err)
             return res.status(422).json({error:err})
             else
@@ -53,7 +59,9 @@ router.put('/like',requireLogin,(req,res,err)=>{
 router.put('/unlike',requireLogin,(req,res,err)=>{
     Post.findByIdAndUpdate(req.body.postId,
      {$pull:{likes:req.user._id}},
-     {new:true}).exec((err,result)=>{
+     {new:true}).populate("comments.postedBy")
+     .exec((err,result)=>{
+         console.log(result)
          if(err)
          return res.status(422).json({error:err})
          else
@@ -61,7 +69,28 @@ router.put('/unlike',requireLogin,(req,res,err)=>{
      }) 
 })
 
-
+router.put('/comment',requireLogin,(req,res)=>{
+    const comment = {
+        text:req.body.text,
+        postedBy:req.user._id
+    }
+    Post.findByIdAndUpdate(req.body.postId,{
+        $push:{comments:comment}
+    },{
+        new:true
+    })
+    .populate("comments.postedBy")
+    .populate("postedBy",'_id name')
+    .exec((err,result)=>{
+        console.log(result)
+        if(err){
+            
+            return res.status(422).json({error:err})
+        }else{
+            res.json(result)
+        }
+    })
+})
 
 
 

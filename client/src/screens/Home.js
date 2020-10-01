@@ -72,6 +72,62 @@ const Home = ()=>{
         .catch(err=>console.log(err))
     }
 
+    // const postComment=(text,id)=>{
+    //     console.log(text,id)
+    //     fetch('/comment',{
+    //         method:'put',
+    //         headers:{
+    //             'Content-Type':'application/json',
+    //             'Authorization':`Bearer ${localStorage.getItem('jwt')}`
+    //         },
+    //         body:JSON.stringify({text,postId:id}) 
+            
+    //     })
+    //     .then(res=>res.json()).then(result=>
+    //         {
+    //             console.log(result)
+    //             const newPost= posts.map(post=>{
+    //                 if(post._id===result._id){
+    //                     return result
+    //                 }
+    //                 else{
+    //                     return post
+    //                 }
+    //             })
+    //             setPosts(newPost)
+    //         }
+    //     )
+            
+    //     .catch(err=>console.log(err))
+           
+    // }
+    const makeComment = (text,postId)=>{
+        fetch('/comment',{
+            method:"put",
+            headers:{
+                "Content-Type":"application/json",
+                "Authorization":"Bearer "+localStorage.getItem("jwt")
+            },
+            body:JSON.stringify({
+                postId,
+                text
+            })
+        }).then(res=>res.json())
+        .then(result=>{
+            console.log(result)
+            const newData = posts.map(item=>{
+              if(item._id==result._id){
+                  return result
+              }else{
+                  return item
+              }
+           })
+          setPosts(newData)
+        }).catch(err=>{
+            console.log(err)
+        })
+  }
+
     return(
         <div className='home'>
             
@@ -98,7 +154,21 @@ const Home = ()=>{
                        {post.title}
                    </h6>
                     <p>{post.body}</p>
+                    {
+                       post.comments.map(record=>{
+                                return(
+                                <h6 key={record._id}><span style={{fontWeight:"500"}}>{record.postedBy.name}</span> {record.text}</h6>
+                                    )
+                                    })
+                                }
+                    <form onSubmit={(e)=>{
+                        e.preventDefault();
+                        makeComment(e.target[0].value,post._id)
+                        e.target[0].value=""
+                    }}>
                     <input type='text'placeholder='Add a comment' />
+                    </form>
+                    
                </div>
             </div>
                 )
