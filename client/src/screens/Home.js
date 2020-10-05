@@ -1,4 +1,5 @@
 import React,{useContext, useEffect,useState} from 'react'
+import { Link } from 'react-router-dom'
 import {UserContext} from '../App'
 
 const Home = ()=>{
@@ -144,7 +145,7 @@ const Home = ()=>{
                     <div className='card home-card' key={post._id}>
                 
                 <h5 className='card-content'>
-                    {post.postedBy.name} 
+                   <Link to={post.postedBy._id==state._id ? '/profile':`/profile/${post.postedBy._id}`}> {post.postedBy.name} </Link> 
                 {post.postedBy._id==state._id &&
                  <i className="  material-icons like waves-effect waves-light " onClick={()=>deletePost(post._id)} style={{color: '#e57373 ',float:"right"}}>delete</i>}</h5> 
                 
@@ -169,7 +170,10 @@ const Home = ()=>{
                     {
                        post.comments.map(record=>{
                                 return(
-                                <h6 key={record._id}><span style={{fontWeight:"500"}}>{record.postedBy.name}</span> {record.text} 
+                                <h6 key={record._id}><span style={{fontWeight:"500"}}>
+                                    <Link to={record.postedBy._id==state._id?'/profile':`/profile/${record.postedBy._id}`}>
+                                    {record.postedBy.name}</Link>
+                                    </span> {record.text} 
                                 {(post.postedBy._id==state._id||record.postedBy._id==state._id)&&
                  <i className=" material-icons like " onClick={()=>deleteComment(post._id,record._id)} style={{color:'#e57373',float:"right"}}>delete</i>}
                                 

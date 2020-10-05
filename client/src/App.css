@@ -22,7 +22,7 @@ a{
 
 .container{
   max-width: '550px';
-  margin: '0 auto';
+  margin: '0px auto';
 }
 .gallery{
   display: flex;

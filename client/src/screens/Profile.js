@@ -27,13 +27,13 @@ const Profile = ()=>{
                 <h4>{state?state.name:JSON.parse(localStorage.getItem('user')).name}</h4>
                 <div style={{display:'flex',justifyContent:"space-between",width:'108%'}}>
                     <h6>
-                        <b>40</b> Posts
+                    <b>{posts.length}</b> Posts
                     </h6>
                     <h6>
-                        <b>40</b> Followers
+                        <b>{state?state.followers.length:0}</b> Followers
                     </h6>
                     <h6>
-                        <b>40</b> Following
+                        <b>{state?state.following.length:0}</b> Following
                     </h6>
                     </div>
             </div>
