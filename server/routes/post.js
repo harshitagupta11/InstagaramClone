@@ -15,6 +15,16 @@ router.get('/allposts',requireLogin,(req,res,err)=>{
         res.json({posts:posts})
     }).catch(err=>console.log(err))
 })
+router.get('/followingposts',requireLogin,(req,res,err)=>{
+    Post.find({postedBy:{$in:req.user.following}}).populate("postedBy",'_id name')
+    .populate("comments.postedBy",'_id name')
+    
+    .then((posts)=>{
+        //console.log(posts)
+        res.json({posts:posts})
+    }).catch(err=>console.log(err))
+})
+
 
 router.get('/myposts',requireLogin,(req,res,err)=>{
     Post.find({postedBy:req.user._id}).populate("PostedBy","_id name").
@@ -22,6 +32,8 @@ router.get('/myposts',requireLogin,(req,res,err)=>{
         res.json({myposts})
     })).catch(err=>console.log(err))
 })
+
+
 
 router.post('/createpost',requireLogin,(req,res,err)=>{
     const {title,body,photo}=req.body;

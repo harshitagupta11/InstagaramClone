@@ -8,6 +8,7 @@ const NavBar=()=>{
     if(state){
       return [
         <li><Link to="/profile">Profile</Link></li>,
+        <li><Link to="/followingposts">My following</Link></li>,
         <li><Link to="/create">Create Post</Link></li>,
         <li> 
           <button onClick={()=>{
