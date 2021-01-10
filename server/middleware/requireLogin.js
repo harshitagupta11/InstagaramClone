@@ -10,7 +10,7 @@ module.exports=(req,res,next)=>{
     }
     const token = authorization.replace('Bearer ','')
 
-    jwt.verify(token,JWT_SECRET,(err,payload)=>{
+    jwt.verify(token,process.env.jwt_secret|| JWT_SECRET,(err,payload)=>{
         if(err){
             res.status(401).json({error:'You must be signed in!'})
         }
