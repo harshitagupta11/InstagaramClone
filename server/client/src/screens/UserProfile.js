@@ -18,7 +18,7 @@ const UserProfile = ()=>{
         .then(result=>{
             //console.log(result)
             setUserProfile(result)
-            
+            console.log(result)
             
         })
     },[])
@@ -93,6 +93,7 @@ const Follow=()=>{
             </div>
             <div>
                 <h4>{UserProfile.user.name}</h4>
+                <h5>{UserProfile.user.email}</h5>
                 <div style={{display:'flex',justifyContent:"space-between",width:'108%'}}>
                     <h6>
                         <b>{UserProfile.posts.length}</b> Posts
