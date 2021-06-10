@@ -68,7 +68,7 @@ router.put('/like',requireLogin,(req,res,err)=>{
         }) 
 })
 
-router.put('/unlike',requireLogin,(req,res,err)=>{z
+router.put('/unlike',requireLogin,(req,res,err)=>{
     Post.findByIdAndUpdate(req.body.postId,
      {$pull:{likes:req.user._id}},
      {new:true}).populate("comments.postedBy").populate('postedBy','_id name')
