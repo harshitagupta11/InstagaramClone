@@ -25,6 +25,7 @@ const Profile = ()=>{
             </div>
             <div>
                 <h4>{state?state.name:JSON.parse(localStorage.getItem('user')).name}</h4>
+                <h5>{state?state.email:JSON.parse(localStorage.getItem('user')).email}</h5>
                 <div style={{display:'flex',justifyContent:"space-between",width:'108%'}}>
                     <h6>
                     <b>{posts.length}</b> Posts

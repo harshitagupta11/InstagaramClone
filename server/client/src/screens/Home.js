@@ -138,7 +138,8 @@ const Home = ()=>{
 
 
     return(
-        <div className='home'>
+        <>
+        {state? <div className='home'>
             
             {posts.map(post=>{
                 return(
@@ -197,6 +198,9 @@ const Home = ()=>{
             
             
         </div>
+        :<h2>loading... !</h2>
+}
+        </>
     )
 }
 export default Home

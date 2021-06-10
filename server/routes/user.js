@@ -10,13 +10,16 @@ router.get('/user/:id',requireLogin,(req,res,err)=>{
     User.findOne({_id:req.params.id})
     .select('-password')   // not sending password to client
     .then(user=>{
+        
         Post.find({postedBy:user._id})
-        .populate('postedBy','._id name')
+        .populate('postedBy','_id name')
         .exec((err,posts)=>{
-            if(err)
+            if(err){
+            
             return res.status(422).json({error:err})
-
+            }
             else{
+                
                 return res.json({posts,user})
             }
         })
