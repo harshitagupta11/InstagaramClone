@@ -35,7 +35,7 @@ const NavBar=()=>{
     <nav style={{background:'white'}}>
     <div className="nav-wrapper white container" style={{color:'black'}}>
       <Link to={state?'/':'/signin'} className="brand-logo left">Instagram</Link>
-      <ul id="nav-mobile" className="right hide-on-med-and-down">
+      <ul id="nav-mobile" className="right ">
        {renderList()}
         
       </ul>
