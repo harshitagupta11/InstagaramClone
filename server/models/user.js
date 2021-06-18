@@ -13,6 +13,10 @@ password:{
     type:String,
     required:true
 },
+pic:{
+    type:String,
+    default:'https://res.cloudinary.com/myfirstinstaclone/image/upload/v1623991332/photo-1595152772835-219674b2a8a6_gbho7b.jpg'
+},
 followers:[{
     type:ObjectId,
     ref:'User'

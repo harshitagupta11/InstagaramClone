@@ -145,10 +145,18 @@ const Home = ()=>{
                 return(
                     <div className='card home-card' key={post._id}>
                 
-                <h5 className='card-content'>
-                   <Link to={post.postedBy._id==state._id ? '/profile':`/profile/${post.postedBy._id}`}> {post.postedBy.name} </Link> 
+                <h5 className='card-content card-header'>
+                   <Link className="card-profile" to={post.postedBy._id==state._id ? '/profile':`/profile/${post.postedBy._id}`}>
+                   
+                       <img className="card-avatar" src={post.postedBy.pic} />
+                       
+                        <p  style={{fontSize:"1.2rem",textTransform:'capitalize'}}>{post.postedBy.name} </p></Link> 
                 {post.postedBy._id==state._id &&
-                 <i className="  material-icons like waves-effect waves-light " onClick={()=>deletePost(post._id)} style={{color: '#e57373 ',float:"right"}}>delete</i>}</h5> 
+                 <div className="card-delete"> 
+                 <i className="  material-icons like waves-effect waves-light " onClick={()=>deletePost(post._id)} style={{color: '#e57373 ',float:"right"}}>delete</i>
+                 
+                 </div>}
+                 </h5> 
                 
                <div className='card-image'>
                {post.likes.includes(state._id)

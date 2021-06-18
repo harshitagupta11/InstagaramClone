@@ -7,8 +7,8 @@ const Post = mongoose.model('Post');
 
 mongoose.set('useFindAndModify', false);
 router.get('/allposts',requireLogin,(req,res,err)=>{
-    Post.find().populate("postedBy",'_id name')
-    .populate("comments.postedBy",'_id name')
+    Post.find().populate("postedBy",'_id name pic')
+    .populate("comments.postedBy",'_id name pic')
     
     .then((posts)=>{
         //console.log(posts)
@@ -16,8 +16,8 @@ router.get('/allposts',requireLogin,(req,res,err)=>{
     }).catch(err=>console.log(err))
 })
 router.get('/followingposts',requireLogin,(req,res,err)=>{
-    Post.find({postedBy:{$in:req.user.following}}).populate("postedBy",'_id name')
-    .populate("comments.postedBy",'_id name')
+    Post.find({postedBy:{$in:req.user.following}}).populate("postedBy",'_id name pic')
+    .populate("comments.postedBy",'_id name pic')
     
     .then((posts)=>{
         //console.log(posts)
@@ -27,7 +27,7 @@ router.get('/followingposts',requireLogin,(req,res,err)=>{
 
 
 router.get('/myposts',requireLogin,(req,res,err)=>{
-    Post.find({postedBy:req.user._id}).populate("PostedBy","_id name").
+    Post.find({postedBy:req.user._id}).populate("PostedBy","_id name pic").
     then((myposts=>{
         res.json({myposts})
     })).catch(err=>console.log(err))
@@ -59,7 +59,7 @@ router.post('/createpost',requireLogin,(req,res,err)=>{
 router.put('/like',requireLogin,(req,res,err)=>{
        Post.findByIdAndUpdate(req.body.postId,
         {$push:{likes:req.user._id}},
-        {new:true}).populate("comments.postedBy").populate('postedBy','_id name')
+        {new:true}).populate("comments.postedBy").populate('postedBy','_id name pic')
         .exec((err,result)=>{
             if(err)
             return res.status(422).json({error:err})
@@ -71,7 +71,7 @@ router.put('/like',requireLogin,(req,res,err)=>{
 router.put('/unlike',requireLogin,(req,res,err)=>{
     Post.findByIdAndUpdate(req.body.postId,
      {$pull:{likes:req.user._id}},
-     {new:true}).populate("comments.postedBy").populate('postedBy','_id name')
+     {new:true}).populate("comments.postedBy").populate('postedBy','_id name pic')
      .exec((err,result)=>{
          console.log(result)
          if(err)
@@ -92,7 +92,7 @@ router.put('/comment',requireLogin,(req,res)=>{
         new:true
     })
     .populate("comments.postedBy")
-    .populate("postedBy",'_id name')
+    .populate("postedBy",'_id name pic')
     .exec((err,result)=>{
         //console.log(result)
         if(err){
